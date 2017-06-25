@@ -24,18 +24,28 @@ public class HelloWorld {
             IgniteCache<Integer, String> cache = ignite.getOrCreateCache(cacheCfg); */
         try (Ignite ignite = Ignition.start("work/config/test-config.xml")) {
             //create cache
-            IgniteCache<Integer, String> cache = ignite.getOrCreateCache("myCache");
+            IgniteCache<Integer, Integer> cache = ignite.getOrCreateCache("myCache");
             SecureRandom rnd = new SecureRandom();
             //put something to cache
             for (int i = 0; i < 1_000; i++) {
-                cache.put(i, new BigInteger(130, rnd).toString(32));
+                cache.put(i, rnd.nextInt());
             }
 
             //try to read in infinity loop and reboot one node
+            int i = 0;
+            int n = 0;
+            int k = 0;
+            Integer j = 0;
             while (true) {
-                int i = rnd.nextInt(1_000);
+                i = rnd.nextInt(1_000);
                 //ignite.compute().broadcast(() -> System.out.println(i + " " + cache.get(i)));
-                System.out.println(i + " " + cache.get(i));
+                j = cache.get(i);
+                if (j == null) n++;
+                k++;
+                if (k % 1_000_000 == 0) {
+                    System.out.println("Total gets: " + k + " failed: " + n);
+                }
+
             }
         }
     }

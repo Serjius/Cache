@@ -44,7 +44,7 @@
                     <property name="name" value="myCache"/>
                     <property name="atomicityMode" value="ATOMIC"/>
                     <property name="backups" value="1"/>
-                    <property name="CacheMode" value="PARTITIONED"/>
+                    <!--<property name="CacheMode" value="PARTITIONED"/>-->
                 </bean>
             </list>
         </property>
